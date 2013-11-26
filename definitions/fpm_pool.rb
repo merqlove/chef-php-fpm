@@ -51,8 +51,13 @@ define :fpm_pool, :template => "pool.conf.erb", :enable => true do
     :memory_limit => node['php-fpm']['pool'][pool_name]['memory_limit'],
     :session_save_handler => node['php-fpm']['pool'][pool_name]['session_save_handler'],
     :session_save_path => node['php-fpm']['pool'][pool_name]['session_save_path'],
+    :request_slowlog_timeout => node['php-fpm']['pool'][pool_name]['request_slowlog_timeout'],
+    :slowlog => node['php-fpm']['pool'][pool_name]['slowlog'],
+    :backlog => node['php-fpm']['pool'][pool_name]['backlog'],
+    :rlimit_files => node['php-fpm']['pool'][pool_name]['rlimit_files'],
+    :rlimit_core => node['php-fpm']['pool'][pool_name]['rlimit_core'],
     :params => params
     )
-    notifies :restart, "service[php-fpm]"
+    notifies :restart, "service[#{node['php-fpm']['service']}]"
   end
 end

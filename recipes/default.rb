@@ -87,13 +87,7 @@ when 'amazon', 'fedora', 'centos', 'redhat'
   end
 end
 
-if platform_family?("rhel")
-  php_fpm_service_name = "php-fpm"
-else
-  php_fpm_service_name = "php5-fpm"
-end
-
-package php_fpm_service_name do
+package node['php-fpm']['service'] do
   action :upgrade
 end
 
@@ -102,17 +96,18 @@ template node['php-fpm']['conf_file'] do
   mode 00644
   owner "root"
   group "root"
-  notifies :restart, "service[php-fpm]"
+  notifies :restart, "service[#{node['php-fpm']['service']}]"
 end
+
+# TODO: Create pools cleanup 
 
 node['php-fpm']['pools'].each do |pool|
   fpm_pool pool do
-    php_fpm_service_name php_fpm_service_name
+    php_fpm_service_name node['php-fpm']['service']
   end
 end
 
-service "php-fpm" do
-  service_name php_fpm_service_name
+service node['php-fpm']['service'] do
   supports :start => true, :stop => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
