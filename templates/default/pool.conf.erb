@@ -237,6 +237,12 @@ php_admin_value[sendmail_path] = <%= @sendmail_path %>
 <% end %>
 ;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
 ;php_flag[display_errors] = off
+<% if @error_log %>
+php_admin_value[error_log] = <%= @error_log %>
+<% end %>
+<% if @production %>
+php_admin_value[error_reporting] = 0
+<% end %>
 ;php_admin_value[error_log] = /var/log/php-fpm/www-error.log
 ;php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 128M
