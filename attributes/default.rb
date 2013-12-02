@@ -24,11 +24,14 @@ else
   default['php-fpm']['service'] = "php5-fpm"
 end
 
+default['php-fpm']['user'] = user
+default['php-fpm']['group'] = group
 default['php-fpm']['conf_dir'] = conf_dir
 default['php-fpm']['conf_file'] = conf_file
 default['php-fpm']['pid'] = pid
 default['php-fpm']['error_log'] =  error_log
 default['php-fpm']['log_level'] = "notice"
+
 default['php-fpm']['session_save_path'] = "/var/lib/php/session"
 default['php-fpm']['session_save_handler'] = "files"
 
@@ -53,36 +56,37 @@ default['php-fpm']['default']['pool'] = {
 
 default['php-fpm']['pools'] = ["www","testpool"]
 
-default['php-fpm']['pool']['www']['listen'] = "/var/run/php-fpm-www.sock"
-default['php-fpm']['pool']['www']['allowed_clients'] = ["127.0.0.1"]
-default['php-fpm']['pool']['www']['user'] = user
-default['php-fpm']['pool']['www']['group'] = group
-default['php-fpm']['pool']['www']['process_manager'] = "dynamic"
-default['php-fpm']['pool']['www']['max_children'] = 5
-default['php-fpm']['pool']['www']['start_servers'] = 3
-default['php-fpm']['pool']['www']['min_spare_servers'] = 2
-default['php-fpm']['pool']['www']['max_spare_servers'] = 4
-default['php-fpm']['pool']['www']['max_requests'] = 200
-default['php-fpm']['pool']['www']['catch_workers_output'] = "no"
-default['php-fpm']['pool']['www']['request_slowlog_timeout'] = "5s"
-default['php-fpm']['pool']['www']['slowlog'] = "/var/log/php-fpm/slowlog-www.log"
-default['php-fpm']['pool']['www']['backlog'] = "-1"
-default['php-fpm']['pool']['www']['rlimit_files'] = "131072"
-default['php-fpm']['pool']['www']['rlimit_core'] = "unlimited"
+# default['php-fpm']['pool']['www']['listen'] = "/var/run/php-fpm-www.sock"
+# default['php-fpm']['pool']['www']['allowed_clients'] = ["127.0.0.1"]
+# default['php-fpm']['pool']['www']['user'] = user
+# default['php-fpm']['pool']['www']['group'] = group
+# default['php-fpm']['pool']['www']['process_manager'] = "dynamic"
+# default['php-fpm']['pool']['www']['max_children'] = 5
+# default['php-fpm']['pool']['www']['start_servers'] = 3
+# default['php-fpm']['pool']['www']['min_spare_servers'] = 2
+# default['php-fpm']['pool']['www']['max_spare_servers'] = 4
+# default['php-fpm']['pool']['www']['max_requests'] = 200
+# default['php-fpm']['pool']['www']['catch_workers_output'] = "no"
+# default['php-fpm']['pool']['www']['request_slowlog_timeout'] = "5s"
+# default['php-fpm']['pool']['www']['slowlog'] = "/var/log/php-fpm/slowlog-www.log"
+# default['php-fpm']['pool']['www']['backlog'] = "-1"
+# default['php-fpm']['pool']['www']['rlimit_files'] = "131072"
+# default['php-fpm']['pool']['www']['rlimit_core'] = "unlimited"
 # default['php-fpm']['pool']['www']['session_save_path'] = "/var/lib/php/session"
 # default['php-fpm']['pool']['www']['session_save_handler'] = "files"
 
 
-default['php-fpm']['pool']['testpool']['listen'] = "127.0.0.1:9001"
-default['php-fpm']['pool']['testpool']['allowed_clients'] = ["127.0.0.1"]
-default['php-fpm']['pool']['testpool']['user'] = user
-default['php-fpm']['pool']['testpool']['group'] = group
-default['php-fpm']['pool']['testpool']['process_manager'] = "dynamic"
-default['php-fpm']['pool']['testpool']['max_children'] = 50
-default['php-fpm']['pool']['testpool']['start_servers'] = 5
-default['php-fpm']['pool']['testpool']['min_spare_servers'] = 5
-default['php-fpm']['pool']['testpool']['max_spare_servers'] = 35
-default['php-fpm']['pool']['testpool']['max_requests'] = 500
-default['php-fpm']['pool']['testpool']['catch_workers_output'] = "no"
+# default['php-fpm']['pool']['testpool']['listen'] = "127.0.0.1:9001"
+# default['php-fpm']['pool']['testpool']['allowed_clients'] = ["127.0.0.1"]
+# default['php-fpm']['pool']['testpool']['user'] = user
+# default['php-fpm']['pool']['testpool']['group'] = group
+# default['php-fpm']['pool']['testpool']['process_manager'] = "dynamic"
+# default['php-fpm']['pool']['testpool']['max_children'] = 50
+# default['php-fpm']['pool']['testpool']['start_servers'] = 5
+# default['php-fpm']['pool']['testpool']['min_spare_servers'] = 5
+# default['php-fpm']['pool']['testpool']['max_spare_servers'] = 35
+# default['php-fpm']['pool']['testpool']['max_requests'] = 500
+# default['php-fpm']['pool']['testpool']['catch_workers_output'] = "no"
 # default['php-fpm']['pool']['testpool']['session_save_path'] = "/var/lib/php/session"
 # default['php-fpm']['pool']['testpool']['session_save_handler'] = "files"
+
