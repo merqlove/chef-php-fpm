@@ -51,7 +51,7 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
         :session_save_handler => node['php-fpm']['pool'][pool_name]['session_save_handler'],
         :session_save_path => node['php-fpm']['pool'][pool_name]['session_save_path'],
         :request_slowlog_timeout => node['php-fpm']['pool'][pool_name]['request_slowlog_timeout'],
-        :slowlog => node['php-fpm']['pool'][pool_name]['error_log'],
+        :error_log => node['php-fpm']['pool'][pool_name]['error_log'],
         :slowlog => node['php-fpm']['pool'][pool_name]['slowlog'],
         :backlog => node['php-fpm']['pool'][pool_name]['backlog'],
         :production => node['php-fpm']['pool'][pool_name]['production'],
