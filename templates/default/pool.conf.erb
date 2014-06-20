@@ -41,11 +41,6 @@ listen = <%= @listen || "/var/run/php-fpm-#{@pool_name}.sock" %>
 ; BSD-derived systems allow connections regardless of permissions.
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
-<<<<<<< HEAD
-listen.owner = <%= @user || node['php-fpm']['user'] %>
-listen.group = <%= @user || node['php-fpm']['user'] %>
-listen.mode = 0660
-=======
 
 ;listen.owner = nobody
 <% unless @listen_owner.nil? %>
@@ -58,7 +53,6 @@ listen.group = <%= @listen_group %>
 <% end %>
 
 listen.mode = <%= @listen_mode || "0660" %>
->>>>>>> upstream/master
 
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
