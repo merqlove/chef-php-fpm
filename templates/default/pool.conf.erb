@@ -427,7 +427,7 @@ php_admin_value[sendmail_path] = <%= @sendmail_path %>
 ;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
 ;php_flag[display_errors] = off
 
-<% if @error_log %>
+<% unless @error_log.nil? %>
 php_admin_value[error_log] = <%= @error_log %>
 <% end %>
 <% if @production %>
@@ -436,8 +436,16 @@ php_admin_value[error_reporting] = 0
 ;php_admin_value[error_log] = /var/log/php-fpm/www-error.log
 ;php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 128M
-<% if @memory_limit %>
-php_admin_value[memory_limit] = <%= @memory_limit %> 128M
+<% unless @memory_limit.nil? %>
+php_admin_value[memory_limit] = <%= @memory_limit %>
+<% end %>
+
+<% unless @upload_max_filesize.nil? %>
+php_admin_value[upload_max_filesize] = <%= @upload_max_filesize %>
+<% end %>
+
+<% unless @post_max_size.nil? %>
+php_admin_value[post_max_size] = <%= @post_max_size %>
 <% end %>
 
 ; Set session path to a directory owned by process user
@@ -448,7 +456,7 @@ php_admin_value[memory_limit] = <%= @memory_limit %> 128M
 php_value[session.save_handler] = <%= @session_save_handler %>
 <% end %>
 
-<% if @session_save_path %>
+<% unless @session_save_path.nil? %>
 php_value[session.save_path] = <%= @session_save_path %>
 <% end %>
 

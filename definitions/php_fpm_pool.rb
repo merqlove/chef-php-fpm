@@ -59,6 +59,8 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
         :backlog => node['php-fpm']['pool'][pool_name]['backlog'],
         :production => node['php-fpm']['pool'][pool_name]['production'],
         :rlimit_files => node['php-fpm']['pool'][pool_name]['rlimit_files'],
+        :upload_max_filesize => node['php-fpm']['pool'][pool_name]['upload_max_filesize'],
+        :post_max_size => node['php-fpm']['pool'][pool_name]['post_max_size'],
         :rlimit_core => node['php-fpm']['pool'][pool_name]['rlimit_core'],
         :security_limit_extensions => node['php-fpm']['pool'][pool_name]['security_limit_extensions'] || node['php-fpm']['security_limit_extensions'],
         :php_options => node['php-fpm']['pool'][pool_name]['php_options'] || {},

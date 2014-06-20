@@ -34,6 +34,8 @@ default['php-fpm']['conf_file'] = conf_file
 default['php-fpm']['pid'] = pid
 default['php-fpm']['error_log'] =  error_log
 default['php-fpm']['log_level'] = "notice"
+default['php-fpm']['upload_max_filesize'] = "16M"
+default['php-fpm']['post_max_size'] = "16M"
 
 default['php-fpm']['session_save_path'] = "/var/lib/php/session"
 default['php-fpm']['session_save_handler'] = "files"
