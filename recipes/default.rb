@@ -44,18 +44,18 @@ when 'debian'
   # Configure Dotdeb repos
   # TODO: move this to it's own 'dotdeb' cookbook?
   # http://www.dotdeb.org/instructions/
-  if node.lsb.codename == 'squeeze'
+  if node.platform_version.to_f >= 7.0
     apt_repository "dotdeb" do
       uri "http://packages.dotdeb.org"
-      distribution "squeeze"
+      distribution "stable"
       components ['all']
       key "http://www.dotdeb.org/dotdeb.gpg"
       action :add
     end
-  elsif node.platform_version.to_f >= 7.0
+  elsif node.platform_version.to_f >= 6.0
     apt_repository "dotdeb" do
       uri "http://packages.dotdeb.org"
-      distribution "stable"
+      distribution "squeeze"
       components ['all']
       key "http://www.dotdeb.org/dotdeb.gpg"
       action :add
@@ -79,11 +79,31 @@ when 'debian'
 
 when 'amazon', 'fedora', 'centos', 'redhat'
   unless platform?('centos', 'redhat') && node['platform_version'].to_f >= 6.4
-    include_recipe "yum-remi::default"    
+    yum_key 'RPM-GPG-KEY-remi' do
+      url 'http://rpms.famillecollet.com/RPM-GPG-KEY-remi'
+    end
+
+    yum_repository 'remi' do
+      description 'Remi'
+      url node['php-fpm']['yum_url']
+      mirrorlist node['php-fpm']['yum_mirrorlist']
+      key 'RPM-GPG-KEY-remi'
+      action :add
+    end
   end
 end
 
-package node['php-fpm']['service'] do
+if node['php-fpm']['package_name'].nil?
+	if platform_family?("rhel")
+	  php_fpm_package_name = "php-fpm"
+	else
+	  php_fpm_package_name = "php5-fpm"
+	end
+else
+	php_fpm_package_name = node['php-fpm']['package_name']
+end
+
+package php_fpm_package_name do
   action :upgrade
 end
 
@@ -95,15 +115,25 @@ template node['php-fpm']['conf_file'] do
   notifies :restart, "service[#{node['php-fpm']['service']}]"
 end
 
-node['php-fpm']['pools'].each do |pool|
-  php_fpm_pool pool do
-    php_fpm_service_name node['php-fpm']['service']
-  end
+if node['php-fpm']['service_name'].nil?
+	php_fpm_service_name = php_fpm_package_name
+else
+	php_fpm_service_name = node['php-fpm']['service_name']
 end
 
-service node['php-fpm']['service'] do
+service "php-fpm" do
   provider service_provider if service_provider
   supports :start => true, :stop => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
 
+
+if node['php-fpm']['pools']
+  node['php-fpm']['pools'].each do |pool|
+    php_fpm_pool pool[:name] do
+      pool.each do |k, v|
+        self.params[k.to_sym] = v
+      end
+    end
+  end
+end

@@ -23,11 +23,11 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
 
   include_recipe "php-fpm"
 
-  conf_file = "#{node['php-fpm']['conf_dir']}/pools/#{pool_name}.conf"
+  conf_file = "#{node['php-fpm']['pool_conf_dir']}/#{pool_name}.conf"
 
   if params[:enable]
     template conf_file do
-      only_if "test -d #{node['php-fpm']['conf_dir']}/pools || mkdir -p #{node['php-fpm']['conf_dir']}/pools"
+      only_if "test -d #{node['php-fpm']['pool_conf_dir']} || mkdir -p #{node['php-fpm']['pool_conf_dir']}"
       source params[:template]
       owner "root"
       group "root"
@@ -36,6 +36,9 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
       variables(
         :pool_name => pool_name,
         :listen => node['php-fpm']['pool'][pool_name]['listen'],
+        :listen_owner => node['php-fpm']['pool'][pool_name]['listen_owner'] || node['php-fpm']['listen_owner'],
+        :listen_group => node['php-fpm']['pool'][pool_name]['listen_group'] || node['php-fpm']['listen_group'],
+        :listen_mode => node['php-fpm']['pool'][pool_name]['listen_mode'] || node['php-fpm']['listen_mode'],
         :allowed_clients => node['php-fpm']['pool'][pool_name]['allowed_clients'],
         :user => node['php-fpm']['pool'][pool_name]['user'],
         :group => node['php-fpm']['pool'][pool_name]['group'],
@@ -57,6 +60,7 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
         :production => node['php-fpm']['pool'][pool_name]['production'],
         :rlimit_files => node['php-fpm']['pool'][pool_name]['rlimit_files'],
         :rlimit_core => node['php-fpm']['pool'][pool_name]['rlimit_core'],
+        :security_limit_extensions => node['php-fpm']['pool'][pool_name]['security_limit_extensions'] || node['php-fpm']['security_limit_extensions'],
         :php_options => node['php-fpm']['pool'][pool_name]['php_options'] || {},
         :params => params
       )
