@@ -42,6 +42,9 @@ listen = <%= @listen || "/var/run/php-fpm-#{@pool_name}.sock" %>
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
 
+listen.owner = <%= @user || node['php-fpm']['user'] %>
+listen.group = <%= @user || node['php-fpm']['user'] %>
+
 ;listen.owner = nobody
 <% unless @listen_owner.nil? %>
 listen.owner = <%= @listen_owner %>
@@ -53,6 +56,7 @@ listen.group = <%= @listen_group %>
 <% end %>
 
 listen.mode = <%= @listen_mode || "0660" %>
+
 
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
