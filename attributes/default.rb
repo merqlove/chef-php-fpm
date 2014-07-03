@@ -53,10 +53,12 @@ default['php-fpm']['default']['pool'] = {
   max_spare_servers: 3,
   max_requests: 200,
   catch_workers_output: "yes",            
-  request_slowlog_timeout: "5s",      
-  backlog: "-1",
-  rlimit_files: "131072",
-  rlimit_core: "unlimited"
+  :php_options => {
+    'request_slowlog_timeout' => "5s",      
+    'backlog' => "-1",
+    'rlimit_files' => "131072",
+    'rlimit_core' => "unlimited"  
+  }
 }
 
 # default['php-fpm']['pool']['www']['listen'] = "/var/run/php-fpm-www.sock"
@@ -86,6 +88,8 @@ default['php-fpm']['pools'] = [
     :name => "www"
   }
 ]
+
+default['php-fpm']['skip_repository_install'] = false
 
 default['php-fpm']['yum_url'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/"
 default['php-fpm']['yum_mirrorlist'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror"

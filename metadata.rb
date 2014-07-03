@@ -4,11 +4,10 @@ maintainer_email "cookbooks@opscode.com"
 license          "Apache 2.0"
 description      "Installs/Configures php-fpm"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.6.9"
+version          "0.6.11"
 
 depends "apt"
 depends "yum", ">= 3.0"
-depends "yum-remi"
 
 %w{ debian ubuntu centos redhat fedora amazon }.each do |os|
   supports os

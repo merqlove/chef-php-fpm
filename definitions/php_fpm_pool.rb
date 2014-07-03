@@ -21,8 +21,6 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
 
   pool_name = params[:name]
 
-  include_recipe "php-fpm"
-
   conf_file = "#{node['php-fpm']['pool_conf_dir']}/#{pool_name}.conf"
 
   if params[:enable]
@@ -35,35 +33,22 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
       cookbook params[:cookbook] || "php-fpm"
       variables(
         :pool_name => pool_name,
-        :listen => node['php-fpm']['pool'][pool_name]['listen'],
-        :listen_owner => node['php-fpm']['pool'][pool_name]['listen_owner'] || node['php-fpm']['listen_owner'],
-        :listen_group => node['php-fpm']['pool'][pool_name]['listen_group'] || node['php-fpm']['listen_group'],
-        :listen_mode => node['php-fpm']['pool'][pool_name]['listen_mode'] || node['php-fpm']['listen_mode'],
-        :allowed_clients => node['php-fpm']['pool'][pool_name]['allowed_clients'],
-        :user => node['php-fpm']['pool'][pool_name]['user'],
-        :group => node['php-fpm']['pool'][pool_name]['group'],
-        :process_manager => node['php-fpm']['pool'][pool_name]['process_manager'],
-        :max_children => node['php-fpm']['pool'][pool_name]['max_children'],
-        :start_servers => node['php-fpm']['pool'][pool_name]['start_servers'],
-        :min_spare_servers => node['php-fpm']['pool'][pool_name]['min_spare_servers'],
-        :max_spare_servers => node['php-fpm']['pool'][pool_name]['max_spare_servers'],
-        :max_requests => node['php-fpm']['pool'][pool_name]['max_requests'],
-        :catch_workers_output => node['php-fpm']['pool'][pool_name]['catch_workers_output'],
-        :sendmail_path => node['php-fpm']['pool'][pool_name]['sendmail_path'],
-        :memory_limit => node['php-fpm']['pool'][pool_name]['memory_limit'],
-        :session_save_handler => node['php-fpm']['pool'][pool_name]['session_save_handler'],
-        :session_save_path => node['php-fpm']['pool'][pool_name]['session_save_path'],
-        :request_slowlog_timeout => node['php-fpm']['pool'][pool_name]['request_slowlog_timeout'],
-        :error_log => node['php-fpm']['pool'][pool_name]['error_log'],
-        :slowlog => node['php-fpm']['pool'][pool_name]['slowlog'],
-        :backlog => node['php-fpm']['pool'][pool_name]['backlog'],
-        :production => node['php-fpm']['pool'][pool_name]['production'],
-        :rlimit_files => node['php-fpm']['pool'][pool_name]['rlimit_files'],
-        :upload_max_filesize => node['php-fpm']['pool'][pool_name]['upload_max_filesize'] || node['php-fpm']['upload_max_filesize'],
-        :post_max_size => node['php-fpm']['pool'][pool_name]['post_max_size'] || node['php-fpm']['post_max_size'],
-        :rlimit_core => node['php-fpm']['pool'][pool_name]['rlimit_core'],
-        :security_limit_extensions => node['php-fpm']['pool'][pool_name]['security_limit_extensions'] || node['php-fpm']['security_limit_extensions'],
-        :php_options => node['php-fpm']['pool'][pool_name]['php_options'] || {},
+        :listen => params[:listen],
+        :listen_owner => params[:listen_owner] || node['php-fpm']['listen_owner'] || node['php-fpm']['user'],
+        :listen_group => params[:listen_group] || node['php-fpm']['listen_group'] || node['php-fpm']['group'],
+        :listen_mode => params[:listen_mode] || node['php-fpm']['listen_mode'],
+        :allowed_clients => params[:allowed_clients],
+        :user => params[:user],
+        :group => params[:group],
+        :process_manager => params[:process_manager],
+        :max_children => params[:max_children],
+        :start_servers => params[:start_servers],
+        :min_spare_servers => params[:min_spare_servers],
+        :max_spare_servers => params[:max_spare_servers],
+        :max_requests => params[:max_requests],
+        :catch_workers_output => params[:catch_workers_output],
+        :security_limit_extensions => params[:security_limit_extensions] || node['php-fpm']['security_limit_extensions'],
+        :php_options => params[:php_options] || {},
         :params => params
       )
       notifies :restart, "service[#{node['php-fpm']['service']}]"

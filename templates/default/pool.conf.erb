@@ -42,9 +42,6 @@ listen = <%= @listen || "/var/run/php-fpm-#{@pool_name}.sock" %>
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
 
-; listen.owner = <%= @user || node['php-fpm']['user'] %>
-; listen.group = <%= @user || node['php-fpm']['user'] %>
-
 ;listen.owner = nobody
 <% unless @listen_owner.nil? %>
 listen.owner = <%= @listen_owner %>
@@ -115,7 +112,9 @@ pm.max_children = <%= @max_children || 50 %>
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
-pm.start_servers = <%= @start_servers || 5 %>
+<% if @start_servers %>
+ pm.start_servers = <%= @start_servers %>
+<% end %>
 
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
@@ -325,17 +324,13 @@ pm.max_requests = <%= @max_requests || 500 %>
 ; dumped to the 'slowlog' file. A value of '0s' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-<% if @request_slowlog_timeout %>
-request_slowlog_timeout = <%= @request_slowlog_timeout %>
-<% end %>
+
 ;request_slowlog_timeout = 0
 
 ; The log file for slow requests
 ; Default Value: not set
 ; Note: slowlog is mandatory if request_slowlog_timeout is set
-<% if @slowlog %>
-slowlog = <%= @slowlog %>
-<% end %>
+
 ;slowlog = /var/log/php-fpm/www-slow.log
 
 ; The timeout for serving a single request after which the worker process will
@@ -347,17 +342,13 @@ slowlog = <%= @slowlog %>
 
 ; Set open file descriptor rlimit.
 ; Default Value: system defined value
-<% if @rlimit_files %>
-rlimit_files = <%= @rlimit_files %>
-<% end %>
+
 ;rlimit_files = 1024
 
 ; Set max core size rlimit.
 ; Possible Values: 'unlimited' or an integer greater or equal to 0
 ; Default Value: system defined value
-<% if @rlimit_core %>
-rlimit_core = <%= @rlimit_core %>
-<% end %>
+
 ;rlimit_core = 0
 
 ; Chroot to this directory at the start. This value must be defined as an
@@ -421,18 +412,10 @@ security.limit_extensions = <%=@security_limit_extensions || ".php" %>
 
 ; Default Value: nothing is defined by default except the values in php.ini and
 ;                specified at startup with the -d argument
-<% if @sendmail_path %>
-php_admin_value[sendmail_path] = <%= @sendmail_path %>
-<% end %>
+
 ;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
 ;php_flag[display_errors] = off
 
-<% unless @error_log.nil? %>
-php_admin_value[error_log] = <%= @error_log %>
-<% end %>
-<% if @production %>
-php_admin_value[error_reporting] = 0
-<% end %>
 ;php_admin_value[error_log] = /var/log/php-fpm/www-error.log
 ;php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 128M
@@ -454,10 +437,6 @@ php_admin_value[post_max_size] = <%= @post_max_size %>
 
 <% if @session_save_handler %>
 php_value[session.save_handler] = <%= @session_save_handler %>
-<% end %>
-
-<% unless @session_save_path.nil? %>
-php_value[session.save_path] = <%= @session_save_path %>
 <% end %>
 
 <% @php_options.each do |name,value| %>
