@@ -419,26 +419,11 @@ security.limit_extensions = <%=@security_limit_extensions || ".php" %>
 ;php_admin_value[error_log] = /var/log/php-fpm/www-error.log
 ;php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 128M
-<% unless @memory_limit.nil? %>
-php_admin_value[memory_limit] = <%= @memory_limit %>
-<% end %>
-
-<% unless @upload_max_filesize.nil? %>
-php_admin_value[upload_max_filesize] = <%= @upload_max_filesize %>
-<% end %>
-
-<% unless @post_max_size.nil? %>
-php_admin_value[post_max_size] = <%= @post_max_size %>
-<% end %>
 
 ; Set session path to a directory owned by process user
 ;php_value[session.save_handler] = files
 ;php_value[session.save_path] = /var/lib/php/session
 
-<% if @session_save_handler %>
-php_value[session.save_handler] = <%= @session_save_handler %>
-<% end %>
-
 <% @php_options.each do |name,value| %>
-  <%= "#{name} = #{value}" %>
+<%= "#{name} = #{value}" %>
 <% end %>
