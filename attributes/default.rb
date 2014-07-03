@@ -45,6 +45,7 @@ default['php-fpm']['emergency_restart_interval'] = "1m"
 default['php-fpm']['process_control_timeout'] = "10s"
 
 default['php-fpm']['default']['pool'] = {
+  :name => "www",
   allowed_clients: "127.0.0.1",
   process_manager: "dynamic",
   max_children: 4,
