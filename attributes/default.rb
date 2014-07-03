@@ -55,30 +55,11 @@ default['php-fpm']['default']['pool'] = {
   catch_workers_output: "yes",            
   :php_options => {
     'request_slowlog_timeout' => "5s",      
-    'backlog' => "-1",
+    'listen.backlog' => "-1",
     'rlimit_files' => "131072",
     'rlimit_core' => "unlimited"  
   }
 }
-
-# default['php-fpm']['pool']['www']['listen'] = "/var/run/php-fpm-www.sock"
-# default['php-fpm']['pool']['www']['allowed_clients'] = ["127.0.0.1"]
-# default['php-fpm']['pool']['www']['user'] = user
-# default['php-fpm']['pool']['www']['group'] = group
-# default['php-fpm']['pool']['www']['process_manager'] = "dynamic"
-# default['php-fpm']['pool']['www']['max_children'] = 5
-# default['php-fpm']['pool']['www']['start_servers'] = 3
-# default['php-fpm']['pool']['www']['min_spare_servers'] = 2
-# default['php-fpm']['pool']['www']['max_spare_servers'] = 4
-# default['php-fpm']['pool']['www']['max_requests'] = 200
-# default['php-fpm']['pool']['www']['catch_workers_output'] = "no"
-# default['php-fpm']['pool']['www']['request_slowlog_timeout'] = "5s"
-# default['php-fpm']['pool']['www']['slowlog'] = "/var/log/php-fpm/slowlog-www.log"
-# default['php-fpm']['pool']['www']['backlog'] = "-1"
-# default['php-fpm']['pool']['www']['rlimit_files'] = "131072"
-# default['php-fpm']['pool']['www']['rlimit_core'] = "unlimited"
-# default['php-fpm']['pool']['www']['session_save_path'] = "/var/lib/php/session"
-# default['php-fpm']['pool']['www']['session_save_handler'] = "files"
 
 default['php-fpm']['emergency_restart_threshold'] = 0
 default['php-fpm']['emergency_restart_interval'] = 0
