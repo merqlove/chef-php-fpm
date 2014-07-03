@@ -54,8 +54,7 @@ default['php-fpm']['default']['pool'] = {
   max_spare_servers: 3,
   max_requests: 200,
   catch_workers_output: "yes",            
-  :php_options => {
-    'request_slowlog_timeout' => "5s",      
+  :php_options => {            
     'listen.backlog' => "-1",
     'rlimit_files' => "131072",
     'rlimit_core' => "unlimited"  
