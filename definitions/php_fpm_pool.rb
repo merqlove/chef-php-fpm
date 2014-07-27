@@ -51,12 +51,12 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
         :php_options => params[:php_options] || {},
         :params => params
       )
-      notifies :restart, "service[#{node['php-fpm']['service']}]"
+      notifies :restart, "service[php-fpm]"
     end
   else
     cookbook_file conf_file do
       action :delete
-      notifies :restart, "service[#{node['php-fpm']['service']}]"
+      notifies :restart, "service[php-fpm]"
     end
   end
 end
