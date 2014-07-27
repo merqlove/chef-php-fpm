@@ -52,8 +52,7 @@ listen.owner = <%= @listen_owner %>
 listen.group = <%= @listen_group %>
 <% end %>
 
-listen.mode = <%= @listen_mode || "0660" %>
-
+listen.mode = <%= @listen_mode || '0660' %>
 
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
@@ -61,7 +60,7 @@ listen.mode = <%= @listen_mode || "0660" %>
 ; must be separated by a comma. If this value is left blank, connections will be
 ; accepted from any ip address.
 ; Default Value: any
-listen.allowed_clients = <%= @allowed_clients ? ([@allowed_clients].flatten.join(',')) : "127.0.0.1" %>
+listen.allowed_clients = <%= @allowed_clients ? ([@allowed_clients].flatten.join(',')) : '127.0.0.1' %>
 
 ; Specify the nice(2) priority to apply to the pool processes (only if set)
 ; The value can vary from -19 (highest priority) to 20 (lower priority)
@@ -95,7 +94,7 @@ listen.allowed_clients = <%= @allowed_clients ? ([@allowed_clients].flatten.join
 ;             pm.process_idle_timeout   - The number of seconds after which
 ;                                         an idle process will be killed.
 ; Note: This value is mandatory.
-pm = <%= @process_manager || "ondemand" %>
+pm = <%= @process_manager || 'ondemand' %>
 
 ; The number of child processes to be created when pm is set to 'static' and the
 ; maximum number of child processes when pm is set to 'dynamic' or 'ondemand'.
@@ -108,7 +107,7 @@ pm = <%= @process_manager || "ondemand" %>
 ; Note: This value is mandatory.
 pm.max_children = <%= @max_children || 50 %>
 
-<% if @process_manager == "dynamic" %>
+<% if @process_manager == 'dynamic' %>
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
@@ -127,7 +126,7 @@ pm.min_spare_servers = <%= @min_spare_servers || 5 %>
 pm.max_spare_servers = <%= @max_spare_servers || 35 %>
 <% end %>
 
-<% if @process_manager == "ondemand" %>
+<% if @process_manager == 'ondemand' %>
 ; The number of seconds after which an idle process will be killed.
 ; Note: Used only when pm is set to 'ondemand'
 ; Default Value: 10s
@@ -373,7 +372,7 @@ pm.max_requests = <%= @max_requests || 500 %>
 ; process time (several ms).
 ; Default Value: no
 
-catch_workers_output = <%= @catch_workers_output || "no" %>
+catch_workers_output = <%= @catch_workers_output || 'no' %>
 
 ; Limits the extensions of the main script FPM will allow to parse. This can
 ; prevent configuration mistakes on the web server side. You should only limit
@@ -382,7 +381,7 @@ catch_workers_output = <%= @catch_workers_output || "no" %>
 ; Note: set an empty value to allow all extensions.
 ; Default Value: .php
 ;security.limit_extensions = .php .php3 .php4 .php5
-security.limit_extensions = <%=@security_limit_extensions || ".php" %>
+security.limit_extensions = <%= @security_limit_extensions || '.php' %>
 
 ; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
 ; the current environment.

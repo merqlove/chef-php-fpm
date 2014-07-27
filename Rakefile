@@ -4,17 +4,17 @@ namespace 'sandbox' do
     if File.directory?('.sandbox')
       puts 'Checking Sandbox: Available!'
     else
-      abort("Please, initialize sandbox: `rake sandbox:init`")
+      abort('Please, initialize sandbox: `rake sandbox:init`')
     end
   end
 
   desc 'Initialize Sandbox'
-  task :init, [:force] do |t, args|
+  task :init, [:force] do |_t, args|
     unless File.directory?('.sandbox') and args.force != 'force'
-      sh %{ rm -rf .sandbox }
-      sh %{ git clone git://github.com/opscode/chef-repo.git .sandbox }
+      sh %( rm -rf .sandbox )
+      sh %( git clone git://github.com/opscode/chef-repo.git .sandbox )
       mkdir('.sandbox/.chef')
-      ::File.open('.sandbox/.chef/knife.rb', "w") do |f|
+      ::File.open('.sandbox/.chef/knife.rb', 'w') do |f|
         f.puts <<-EOH
 current_dir = File.dirname(__FILE__)
 log_level                :info
@@ -29,7 +29,7 @@ EOH
   end
 
   desc 'Copy current cookbook files into Sandbox'
-  task :cookbook => ["check"] do
+  task cookbook: ['check'] do
     dest_dir = '.sandbox/cookbooks/php-fpm'
     puts "Copying cookbook to #{dest_dir}:"
     FileUtils.mkdir_p dest_dir
@@ -42,42 +42,42 @@ EOH
   end
 
   desc 'Install Cookbook Dependencies'
-  task :dependencies => ["check"] do
+  task dependencies: ['check'] do
     require 'chef/cookbook/metadata'
     md = Chef::Cookbook::Metadata.new
     md.from_file('metadata.rb')
     pwd = Dir.pwd
     Dir.chdir("#{pwd}/.sandbox") # chef repo
-    md.dependencies.each do |cookbook, version|
+    md.dependencies.each do |cookbook, _version|
       # Doesn't do versions.. yet
-      sh %{ knife cookbook site install #{cookbook} }
+      sh %( knife cookbook site install #{cookbook} )
     end
     # Install nginx, so we can play with
-    sh %{ knife cookbook site install nginx }
+    sh %( knife cookbook site install nginx )
     Dir.chdir(pwd)
   end
 
   desc 'Startup Sandbox'
-  task :up => ["cookbook"] do
+  task up: ['cookbook'] do
     begin
-      sh %{ vagrant up }
+      sh %( vagrant up )
     rescue
-      abort "TIP: use `rake sandbox:provision` to continue"
+      abort 'TIP: use `rake sandbox:provision` to continue'
     end
   end
 
   desc 'Provision Sandbox'
-  task :provision => ["cookbook"] do
-    sh %{ vagrant provision }
+  task provision: ['cookbook'] do
+    sh %( vagrant provision )
   end
 
   desc 'Destroy Sandbox'
   task :destroy do
-    sh %{ vagrant destroy }
+    sh %( vagrant destroy )
   end
 
   desc 'SSH to Sandbox instance'
   task :ssh do
-    sh %{ vagrant ssh }
+    sh %( vagrant ssh )
   end
 end

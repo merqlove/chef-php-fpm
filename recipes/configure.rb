@@ -19,18 +19,18 @@
 #
 
 template node['php-fpm']['conf_file'] do
-  source "php-fpm.conf.erb"
+  source 'php-fpm.conf.erb'
   mode 00644
-  owner "root"
-  group "root"
-  notifies :restart, "service[php-fpm]"
+  owner 'root'
+  group 'root'
+  notifies :restart, 'service[php-fpm]'
 end
 
 if node['php-fpm']['pools']
   node['php-fpm']['pools'].each do |pool|
     php_fpm_pool pool[:name] do
       pool.each do |k, v|
-        self.params[k.to_sym] = v
+        params[k.to_sym] = v
       end
     end
   end
