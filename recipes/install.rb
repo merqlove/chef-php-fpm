@@ -45,7 +45,7 @@ if node['platform'] == 'ubuntu' && node['platform_version'].to_f >= 13.10
   service_provider = ::Chef::Provider::Service::Upstart
 end
 
-service 'php-fpm' do
+service "php-fpm" do
   provider service_provider if service_provider
   service_name php_fpm_service_name
   supports start: true, stop: true, restart: true, reload: true
