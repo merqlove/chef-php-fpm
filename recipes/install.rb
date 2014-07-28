@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+::Chef::Recipe.send(:include, ::PhpFpm::Helpers)
+
 include_recipe 'php-fpm::repository' unless node['php-fpm']['skip_repository_install']
 
 if node['php-fpm']['package_name'].nil?
@@ -34,20 +36,19 @@ package php_fpm_package_name do
   action :upgrade
 end
 
-if node['php-fpm']['service_name'].nil?
-  php_fpm_service_name = php_fpm_package_name
+node.default['php-fpm']['service'] = php_fpm_package_name if node['php-fpm']['service'].nil?
+
+if ubuntu13xm?
+  service 'php-fpm' do
+    service_name node['php-fpm']['service']
+    provider ::Chef::Provider::Service::Upstart
+    supports start: true, stop: true, restart: true, reload: true
+    action [:enable, :start]
+  end
 else
-  php_fpm_service_name = node['php-fpm']['service_name']
-end
-
-service_provider = nil
-if node['platform'] == 'ubuntu' && node['platform_version'].to_f >= 13.10
-  service_provider = ::Chef::Provider::Service::Upstart
-end
-
-service "php-fpm" do
-  provider service_provider if service_provider
-  service_name php_fpm_service_name
-  supports start: true, stop: true, restart: true, reload: true
-  action [:enable, :start]
+  service 'php-fpm' do
+    service_name node['php-fpm']['service']
+    supports start: true, stop: true, restart: true, reload: true
+    action [:enable, :start]
+  end
 end
